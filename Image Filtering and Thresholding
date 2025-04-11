@@ -1,0 +1,59 @@
+import cv2
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Load an image
+img = cv2.imread(r"C:\Users\salsa\Downloads\Machine Vision\images\cv.png")
+
+# Check if image is loaded properly
+if img is None:
+    print("Error: Image not found. Check the file path.")
+else:
+    # Convert to grayscale
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+
+    # Apply thresholding (binary)
+    ret, thresh = cv2.threshold(gray, 127, 255, cv2.THRESH_BINARY)
+
+    # Apply filters
+    bilateral_filtered = cv2.bilateralFilter(img, 9, 75, 75)
+    box_filtered = cv2.boxFilter(img, -1, (5, 5))
+    gaussian_blurred = cv2.GaussianBlur(img, (5, 5), 0)
+    median_blurred = cv2.medianBlur(img, 5)
+
+    # Convert images to RGB for matplotlib display
+    img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+    bilateral_rgb = cv2.cvtColor(bilateral_filtered, cv2.COLOR_BGR2RGB)
+    box_rgb = cv2.cvtColor(box_filtered, cv2.COLOR_BGR2RGB)
+    gaussian_rgb = cv2.cvtColor(gaussian_blurred, cv2.COLOR_BGR2RGB)
+    median_rgb = cv2.cvtColor(median_blurred, cv2.COLOR_BGR2RGB)
+
+    # Display all images using matplotlib
+    fig, axs = plt.subplots(2, 3, figsize=(14, 8))
+
+    axs[0, 0].imshow(img_rgb)
+    axs[0, 0].set_title("Original")
+    axs[0, 0].axis('off')
+
+    axs[0, 1].imshow(bilateral_rgb)
+    axs[0, 1].set_title("Bilateral Filter")
+    axs[0, 1].axis('off')
+
+    axs[0, 2].imshow(box_rgb)
+    axs[0, 2].set_title("Box Filter")
+    axs[0, 2].axis('off')
+
+    axs[1, 0].imshow(gaussian_rgb)
+    axs[1, 0].set_title("Gaussian Blur")
+    axs[1, 0].axis('off')
+
+    axs[1, 1].imshow(median_rgb)
+    axs[1, 1].set_title("Median Blur")
+    axs[1, 1].axis('off')
+
+    axs[1, 2].imshow(thresh, cmap='gray')
+    axs[1, 2].set_title("Thresholding")
+    axs[1, 2].axis('off')
+
+    plt.tight_layout()
+    plt.show()
