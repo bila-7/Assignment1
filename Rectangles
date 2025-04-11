@@ -1,0 +1,15 @@
+import cv2
+import numpy as np
+
+# Create a blank white image
+img = np.ones((500, 500, 3), dtype=np.uint8) * 255
+
+# Draw the rectangles
+cv2.rectangle(img, (100, 100), (150, 200), (0, 255, 0), 2)
+cv2.rectangle(img, (200, 200), (300, 300), (0, 255, 0), 2)
+cv2.rectangle(img, (250, 320), (400, 400), (0, 255, 0), 2)
+
+# Display the image
+cv2.imshow('Rectangles', img)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
