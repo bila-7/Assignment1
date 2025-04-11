@@ -1,0 +1,49 @@
+import cv2
+import matplotlib.pyplot as plt
+import numpy as np
+
+# Load the ID image
+img = cv2.imread(r"C:\Users\salsa\Downloads\WhatsApp Image 2025-04-11 at 10.06.27 PM.jpeg")
+img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)  # Convert image to RGB
+
+# Get image dimensions
+height, width = img.shape[:2]
+
+# Your name and text settings
+name = "Salsabeel Mahmoud"
+font = cv2.FONT_HERSHEY_SIMPLEX
+cv2.putText(img, name, (50, height - 50), font, 2, (0, 0, 0), 3)  
+(text_width, _), _ = cv2.getTextSize(name, font, 2, 3)
+cv2.line(img, (50, height - 45), (50 + text_width, height - 45), (0, 0, 0), 2)  
+
+# Transparency levels to apply
+alphas = [0.25, 0.5, 0.75, 1.0]
+
+# Create subplots for displaying the images
+fig, axes = plt.subplots(2, 3, figsize=(12, 8))  
+
+# Show the original image in the first subplot
+axes[0, 0].imshow(img)
+axes[0, 0].axis('off')  
+axes[0, 0].set_title("Original Image")
+
+# For the remaining subplots, apply transparency and show
+for i, alpha in enumerate(alphas):
+    # Copy the original image
+    img_copy = img.copy()
+
+    # Convert to 4-channel (RGBA) to add transparency
+    img_copy = cv2.cvtColor(img_copy, cv2.COLOR_RGB2BGRA)
+
+    # Apply transparency to the entire image
+    img_copy[:, :, 3] = (img_copy[:, :, 3] * alpha).astype(np.uint8)  
+    # Display the image with transparency in the subplot
+    row = (i + 1) // 3
+    col = (i + 1) % 3
+    axes[row, col].imshow(img_copy)
+    axes[row, col].axis('off')
+    axes[row, col].set_title(f"Alpha = {alpha}")
+
+plt.suptitle("University ID with Transparency", fontsize=16)
+plt.tight_layout()
+plt.show()
